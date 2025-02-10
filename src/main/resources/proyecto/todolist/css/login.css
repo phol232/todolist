@@ -1,0 +1,95 @@
+
+.root {
+    -fx-background-color: white;
+}
+
+/* LOGO Y TÍTULOS */
+.logo {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.subtitle {
+    -fx-font-size: 12px;
+    -fx-text-fill: gray;
+}
+
+.separator-label {
+    -fx-text-fill: gray;
+    -fx-font-size: 12px;
+}
+
+/* BOTONES DE SOCIAL LOGIN */
+.social-button {
+    -fx-background-color: white;
+    -fx-border-color: #D1D5DB;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-font-size: 14px;
+    -fx-graphic-text-gap: 10px; /* Espaciado entre el ícono y el texto */
+    -fx-alignment: center-left;
+}
+
+.social-button:hover {
+    -fx-background-color: #F3F4F6;
+}
+
+.input-container {
+    -fx-background-color: white;
+    -fx-border-color: #572364;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+    -fx-alignment: center-left;
+    -fx-spacing: 5px;
+}
+
+/* Aplica el borde azul cuando el campo de entrada está enfocado */
+.input-container:focused {
+    -fx-border-color: #572364;
+    -fx-border-width: 2px;
+}
+
+/* Mantiene el input sin bordes internos */
+.input {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+    -fx-pref-width: 200px; /* Ajusta el ancho según sea necesario */
+}
+
+/* BOTÓN DE LOGIN */
+.login-button {
+    -fx-background-color: #0078D7;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-pref-width: 100px;
+}
+
+.login-button:hover {
+    -fx-background-color: #005BB5;
+}
+
+
+/* ESTILOS DEL HYPERLINK */
+.account-text {
+    -fx-text-fill: gray;
+    -fx-font-size: 14px;
+}
+
+Hyperlink {
+    -fx-text-fill: #0078D7;
+    -fx-font-size: 14px;
+}
+
+Hyperlink:hover {
+    -fx-underline: true;
+}

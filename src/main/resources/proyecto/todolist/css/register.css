@@ -1,0 +1,86 @@
+.root {
+    -fx-background-color: white;
+}
+
+.title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-translate-y: -20px;  /* Sube el título 20px */
+}
+
+.subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: gray;
+    -fx-translate-y: -15px;  /* Sube el subtítulo 15px */
+}
+
+
+
+.separator-label {
+    -fx-text-fill: gray;
+    -fx-font-size: 12px;
+}
+
+/* BOTONES SOCIAL LOGIN */
+.social-button {
+    -fx-background-color: white;
+    -fx-border-color: #D1D5DB;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-font-size: 14px;
+    -fx-graphic-text-gap: 10px;
+    -fx-alignment: center-left;
+}
+
+.social-button:hover {
+    -fx-background-color: #F3F4F6;
+}
+
+/* CAMPOS DE ENTRADA */
+.input-container {
+    -fx-background-color: white;
+    -fx-border-color: #D1D5DB;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+    -fx-alignment: center-left;
+}
+
+.input {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+    -fx-pref-width: 230px;
+}
+
+
+
+/* BOTÓN DE REGISTRO */
+.register-button {
+    -fx-background-color: #0078D7;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-padding: 12px;
+    -fx-border-radius: 5px;
+    -fx-pref-width: 150px;
+}
+
+.register-button:hover {
+    -fx-background-color: #005BB5;
+}
+
+/* LINK DE INICIAR SESIÓN */
+.account-text {
+    -fx-text-fill: gray;
+    -fx-font-size: 14px;
+}
+
+Hyperlink {
+    -fx-text-fill: #0078D7;
+    -fx-font-size: 14px;
+}
+
+Hyperlink:hover {
+    -fx-underline: true;
+}

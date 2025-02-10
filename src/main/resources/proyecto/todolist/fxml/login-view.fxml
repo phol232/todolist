@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="proyecto.todolist.LoginController">
+
+    <VBox alignment="CENTER" spacing="10" prefWidth="400" prefHeight="550">
+
+        <padding>
+            <Insets top="20" left="20" right="20" bottom="20"/>
+        </padding>
+
+        <!-- Logo / Título -->
+        <Label text="🔵 ToDO-LIST" styleClass="logo"/>
+        <Label text="Log in to your Account" styleClass="title"/>
+        <Label text="Welcome back! Select method to log in:" styleClass="subtitle"/>
+
+        <!-- Botones de Social Login con íconos -->
+        <HBox alignment="CENTER" spacing="10">
+            <Button text=" Google" styleClass="social-button">
+                <graphic>
+                    <ImageView fitHeight="16" fitWidth="16">
+                        <image>
+                            <Image url="@../imgs/iconos/Google.png"/>
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button text=" Facebook" styleClass="social-button">
+                <graphic>
+                    <ImageView fitHeight="16" fitWidth="16">
+                        <image>
+                            <Image url="@../imgs/iconos/Facebook.png"/>
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+        </HBox>
+
+        <Separator/>
+
+        <Label text="OR CONTINUE WITH EMAIL" styleClass="separator-label"/>
+
+        <HBox fx:id="emailContainer" alignment="CENTER_LEFT" spacing="5" styleClass="input-container">
+            <ImageView fitHeight="16" fitWidth="16">
+                <image>
+                    <Image url="@../imgs/iconos/UserMale.png"/>
+                </image>
+            </ImageView>
+            <TextField fx:id="emailField" promptText="Email" styleClass="input"/>
+        </HBox>
+
+        <HBox fx:id="passwordContainer" alignment="CENTER_LEFT" spacing="5" styleClass="input-container">
+            <ImageView fitHeight="16" fitWidth="16">
+                <image>
+                    <Image url="@../imgs/iconos/Lock.png"/>
+                </image>
+            </ImageView>
+            <PasswordField fx:id="passwordField" promptText="Password" styleClass="input"/>
+        </HBox>
+
+
+
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <CheckBox fx:id="rememberMe" text="Remember me"/>
+            <Hyperlink text="Forgot Password?" fx:id="forgotPassword"/>
+        </HBox>
+
+        <!-- Botón de Login -->
+        <Button text="Log in" fx:id="loginButton" styleClass="login-button" onAction="#handleLogin"/>
+
+        <!-- Link para crear cuenta -->
+        <HBox alignment="CENTER" spacing="5">
+            <Label text="Don't have an account?" styleClass="account-text"/>
+            <Hyperlink text="Create an account" fx:id="createAccount"/>
+        </HBox>
+
+    </VBox>
+</AnchorPane>
