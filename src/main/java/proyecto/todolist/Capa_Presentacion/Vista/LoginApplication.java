@@ -1,4 +1,4 @@
-package proyecto.todolist;
+package proyecto.todolist.Capa_Presentacion.Vista;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

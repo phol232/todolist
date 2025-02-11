@@ -19,7 +19,12 @@
     </properties>
 
     <dependencies>
-        <!-- Dependencias JavaFX -->
+        <!-- 📌 Dependencias JavaFX (Se agregó javafx-base y javafx-graphics) -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -28,6 +33,11 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
             <version>${javafx.version}</version>
         </dependency>
         <dependency>
@@ -46,7 +56,7 @@
             <version>${javafx.version}</version>
         </dependency>
 
-        <!-- Librerías adicionales -->
+        <!-- 📌 Librerías adicionales -->
         <dependency>
             <groupId>org.controlsfx</groupId>
             <artifactId>controlsfx</artifactId>
@@ -83,7 +93,7 @@
             <version>17.3</version>
         </dependency>
 
-        <!-- JUnit para pruebas -->
+        <!-- 📌 JUnit para pruebas -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -100,7 +110,7 @@
 
     <build>
         <plugins>
-            <!-- Configuración del compilador para Java 17 -->
+            <!-- 📌 Configuración del compilador para Java 17 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -110,7 +120,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Plugin para ejecutar JavaFX -->
+            <!-- 📌 Plugin para ejecutar JavaFX (Corregido y optimizado) -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
@@ -118,8 +128,11 @@
                 <executions>
                     <execution>
                         <id>default-cli</id>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
                         <configuration>
-                            <mainClass>proyecto.todolist.LoginApplication</mainClass>
+                            <mainClass>proyecto.todolist.Capa_Presentacion.Vista.LoginApplication</mainClass>
                         </configuration>
                     </execution>
                 </executions>

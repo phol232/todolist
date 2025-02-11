@@ -1,0 +1,195 @@
+/* Estilo del sidebar */
+.sidebar {
+    -fx-background-color: #2965f1;
+    -fx-padding: 15px;
+}
+
+/* Paneles blancos superiores */
+.topPanel1 {
+    -fx-background-color: white;
+    -fx-border-color: #dcdde1;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+    -fx-pref-height: 100px;
+    -fx-pref-width: 250px;
+}
+
+.topPanel2 {
+    -fx-background-color: white;
+    -fx-border-color: #dcdde1;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+    -fx-pref-height: 100px;
+}
+
+
+
+.logo {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-padding: 10px 0;
+}
+
+/* Estilos para la lista del menú */
+#menuList {
+    -fx-background-color: transparent;
+    -fx-border-color: none;
+}
+
+#menuList .list-cell {
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+    -fx-padding: 10px 15px;
+    -fx-background-color: transparent;
+    -fx-border-radius: 5px;
+}
+
+#menuList .list-cell:selected {
+    -fx-background-color: white;
+    -fx-text-fill: #2965f1;
+    -fx-font-weight: bold;
+}
+
+#menuList .list-cell:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Contenedor del contenido */
+.content {
+    -fx-background-color: #f5f6fa;
+    -fx-padding: 20px;
+}
+
+/* Estilos del encabezado */
+.header {
+    -fx-padding: 10px 15px;
+    -fx-alignment: center-left;
+}
+
+.welcome-text {
+    -fx-font-size: 16px;
+    -fx-text-fill: #666;
+}
+
+/* Estilo del botón de notificación */
+.notification {
+    -fx-background-color: transparent;
+    -fx-border-color: none;
+    -fx-font-size: 18px;
+    -fx-padding: 5px;
+}
+
+.notification:hover {
+    -fx-background-color: #e0e0e0;
+}
+
+/* Estilos de los botones */
+.searchButton {
+    -fx-background-color: #ffd32a;
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 15px;
+    -fx-border-radius: 5px;
+}
+
+.createButton {
+    -fx-background-color: #ffd32a;
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 15px;
+    -fx-border-radius: 5px;
+    -fx-translate-x: 420px;
+}
+
+.searchButton:hover, .createButton:hover {
+    -fx-background-color: #ffc61a;
+}
+
+/* Estilo del botón de prioridad */
+#priorityButton {
+    -fx-background-color: #ffd32a;
+    -fx-font-size: 14px;
+    -fx-border-radius: 5px;
+}
+
+#priorityButton:hover {
+    -fx-background-color: #ffc61a;
+}
+
+/* Estilo de los filtros */
+TextField {
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5px;
+    -fx-padding: 8px;
+}
+
+/* Tabla de tareas */
+#taskTable {
+    -fx-background-color: white;
+    -fx-border-color: #dcdde1;
+    -fx-border-radius: 5px;
+    -fx-translate-y: 30px;
+}
+
+
+#taskTable .column-header {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dcdde1;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2f3640;
+}
+
+#taskTable .table-row-cell {
+    -fx-border-color: none;
+}
+
+#taskTable .table-row-cell:selected {
+    -fx-background-color: rgba(0, 0, 0, 0.05);
+}
+
+#taskTable .table-row-cell .table-cell {
+    -fx-padding: 10px;
+}
+
+/* Botones dentro de la tabla */
+.tableButton {
+    -fx-font-size: 12px;
+    -fx-padding: 5px 10px;
+    -fx-border-radius: 5px;
+}
+
+.editButton {
+    -fx-background-color: white;
+    -fx-border-color: #6c5ce7;
+    -fx-text-fill: black;
+}
+
+.editButton:hover {
+    -fx-background-color: #6c5ce7;
+    -fx-text-fill: white;
+}
+
+.completeButton {
+    -fx-background-color: white;
+    -fx-border-color: green;
+    -fx-text-fill: green;
+}
+
+.completeButton:hover {
+    -fx-background-color: green;
+    -fx-text-fill: white;
+}
+
+.deleteButton {
+    -fx-background-color: white;
+    -fx-border-color: red;
+    -fx-text-fill: red;
+}
+
+.deleteButton:hover {
+    -fx-background-color: red;
+    -fx-text-fill: white;
+}

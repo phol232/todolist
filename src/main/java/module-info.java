@@ -13,4 +13,10 @@ module proyecto.todolist {
 
     opens proyecto.todolist to javafx.fxml;
     exports proyecto.todolist;
+
+    exports proyecto.todolist.Capa_Presentacion.Controllers;
+    opens proyecto.todolist.Capa_Presentacion.Controllers to javafx.fxml;
+
+    exports proyecto.todolist.Capa_Presentacion.Vista;
+    opens proyecto.todolist.Capa_Presentacion.Vista to javafx.fxml;
 }

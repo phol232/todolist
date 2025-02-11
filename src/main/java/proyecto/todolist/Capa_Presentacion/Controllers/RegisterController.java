@@ -1,4 +1,4 @@
-package proyecto.todolist;
+package proyecto.todolist.Capa_Presentacion.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

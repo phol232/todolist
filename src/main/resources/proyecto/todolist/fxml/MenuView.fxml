@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="proyecto.todolist.Capa_Presentacion.Controllers.MenuController"
+            prefWidth="1250" prefHeight="700">
+
+    <!-- Barra lateral -->
+    <left>
+        <VBox styleClass="sidebar">
+            <Label text="TODO - LIST" styleClass="logo"/>
+            <ListView fx:id="menuList"/>
+        </VBox>
+    </left>
+
+    <!-- Contenido principal -->
+    <center>
+        <VBox styleClass="content">
+
+            <HBox spacing="10">
+                <Pane styleClass="topPanel1" prefWidth="500" prefHeight="60"/>
+                <Pane styleClass="topPanel2" prefWidth="500" prefHeight="60"/>
+            </HBox>
+
+            <!-- Header -->
+            <HBox styleClass="header">
+                <Label fx:id="welcomeLabel" text="Welcome back, User!" styleClass="welcome-text"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="🔔" fx:id="notificationButton" styleClass="notification"/>
+            </HBox>
+
+            <!-- Rectángulos informativos -->
+            <HBox spacing="20" alignment="CENTER">
+                <Pane styleClass="infoBox"/>
+                <Pane styleClass="infoBox"/>
+            </HBox>
+
+            <!-- Filtros y búsqueda -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <MenuButton text="PRIORIDAD" fx:id="priorityButton">
+                    <MenuItem text="Alta 🔴" onAction="#setPriorityHigh"/>
+                    <MenuItem text="Media 🟡" onAction="#setPriorityMedium"/>
+                    <MenuItem text="Baja 🟢" onAction="#setPriorityLow"/>
+                </MenuButton>
+
+                <TextField fx:id="searchInput" promptText="Categorías o estado"/>
+                <Button text="Buscar" fx:id="searchButton" styleClass="searchButton"/>
+                <Button text="➕ CREAR TAREA" fx:id="createTaskButton" styleClass="createButton"/>
+            </HBox>
+
+            <!-- Tabla de tareas -->
+            <TableView fx:id="taskTable">
+                <columns>
+                    <TableColumn text="NOMBRE" minWidth="120"/>
+                    <TableColumn text="DESCRIPCIÓN" minWidth="150"/>
+                    <TableColumn text="CATEGORÍA" minWidth="120"/>
+                    <TableColumn text="PRIORIDAD" minWidth="120"/>
+                    <TableColumn text="STATUS" minWidth="120"/>
+                    <TableColumn text="FECHA" minWidth="130"/>
+                    <TableColumn text="ACCIONES" minWidth="220"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+</BorderPane>

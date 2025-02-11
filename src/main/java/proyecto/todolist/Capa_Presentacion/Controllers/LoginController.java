@@ -1,4 +1,4 @@
-package proyecto.todolist;
+package proyecto.todolist.Capa_Presentacion.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,6 +33,9 @@ public class LoginController {
     private void initialize() {
         // Manejar clic en "Create an account"
         createAccount.setOnAction(event -> handleCreateAccountRedirect());
+
+        // Manejar clic en "Login"
+        loginButton.setOnAction(event -> handleLogin());
     }
 
     @FXML
@@ -41,8 +44,11 @@ public class LoginController {
         String password = passwordField.getText().trim();
 
         if (validateLogin(email, password)) {
-            System.out.println("Login successful!");
+            System.out.println("✅ Login successful!");
             showAlert(Alert.AlertType.INFORMATION, "Success", "Welcome to ToDo List!");
+
+            // Redirigir al MenuView.fxml después de iniciar sesión exitosamente
+            loadMainMenu();
         }
     }
 
@@ -73,7 +79,7 @@ public class LoginController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/proyecto/todolist/fxml/register-view.fxml"));
             Parent root = loader.load();
 
-            // Crear la nueva escena y agregar el CSS
+            // Crear la nueva escena y aplicar CSS
             Scene scene = new Scene(root, 350, 550);
             scene.getStylesheets().add(getClass().getResource("/proyecto/todolist/css/register.css").toExternalForm());
 
@@ -84,6 +90,26 @@ public class LoginController {
         } catch (IOException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Error", "No se pudo cargar la pantalla de registro.");
+        }
+    }
+
+    private void loadMainMenu() {
+        try {
+            // Cargar la vista del menú principal
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/proyecto/todolist/fxml/MenuView.fxml"));
+            Parent root = loader.load();
+
+            // Crear la nueva escena y aplicar CSS
+            Scene scene = new Scene(root, 1250, 700);
+            scene.getStylesheets().add(getClass().getResource("/proyecto/todolist/css/menu.css").toExternalForm());
+
+            // Obtener la ventana actual y reemplazar la escena
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            stage.setScene(scene);
+            stage.setTitle("ToDo List - Menú Principal");
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "No se pudo cargar el menú principal.");
         }
     }
 
