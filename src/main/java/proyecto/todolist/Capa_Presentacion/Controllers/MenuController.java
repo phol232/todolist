@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import proyecto.todolist.Capa_Conexion.TareaService;
 import proyecto.todolist.Capa_Datos.TareaModel;
@@ -37,6 +38,7 @@ public class MenuController implements Initializable {
     @FXML private TableColumn<TareaModel, String> colPrioridad;
     @FXML private TableColumn<TareaModel, String> colStatus;
     @FXML private TableColumn<TareaModel, String> colFecha;
+    @FXML private TableColumn<TareaModel, Void> colAcciones;
 
     private final TareaService tareaService = new TareaService();
 
@@ -111,15 +113,64 @@ public class MenuController implements Initializable {
     }
 
 
-    // 🔹 Configurar las columnas de la tabla
     private void configurarColumnas() {
         colNombre.setCellValueFactory(new PropertyValueFactory<>("titulo"));
         colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
-        colCategoria.setCellValueFactory(new PropertyValueFactory<>("nombreCategoria"));
+        colCategoria.setCellValueFactory(new PropertyValueFactory<>("nombreCategoria")); // ✅ Usa el nombre real de la categoría
         colPrioridad.setCellValueFactory(new PropertyValueFactory<>("prioridad"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("estado"));
         colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+
+        // ✅ Configurar columna de acciones con botones
+        colAcciones.setCellFactory(param -> new TableCell<>() {
+            private final Button btnEditar = new Button("Editar");
+            private final Button btnCompletar = new Button("Completar");
+            private final Button btnEliminar = new Button("Eliminar");
+
+            {
+                // 🔹 Estilos para los botones
+                btnEditar.setStyle("-fx-background-color: #007bff; -fx-text-fill: white;");
+                btnCompletar.setStyle("-fx-background-color: #28a745; -fx-text-fill: white;");
+                btnEliminar.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white;");
+
+                // 🔹 Eventos para los botones
+                btnEditar.setOnAction(event -> {
+                    TareaModel tarea = getTableView().getItems().get(getIndex());
+
+                });
+
+                btnCompletar.setOnAction(event -> {
+                    TareaModel tarea = getTableView().getItems().get(getIndex());
+                    if (tarea != null) {
+                        tareaService.editarTarea(tarea.getIdTarea(), tarea.getTitulo(), tarea.getDescripcion(),
+                                tarea.getCategoria(), tarea.getPrioridad(), "✅ Completado"); // ✅ Actualiza estado
+                        cargarTareasEnTabla(); // 🔄 Refresca la tabla
+                    }
+                });
+
+                btnEliminar.setOnAction(event -> {
+                    TareaModel tarea = getTableView().getItems().get(getIndex());
+                    if (tarea != null) {
+                        tareaService.eliminarTarea(tarea.getIdTarea());
+                        cargarTareasEnTabla();
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    HBox buttonsBox = new HBox(5, btnEditar, btnCompletar, btnEliminar);
+                    setGraphic(buttonsBox);
+                }
+            }
+        });
     }
+
+
 
     // 🔹 Cargar tareas en la tabla en segundo plano
     private void cargarTareasEnTabla() {

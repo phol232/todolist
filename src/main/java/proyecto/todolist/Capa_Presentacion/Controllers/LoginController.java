@@ -111,7 +111,7 @@ public class LoginController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/proyecto/todolist/FXML/MenuView.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root, 1250, 700);
+            Scene scene = new Scene(root, 1290, 700);
             scene.getStylesheets().add(getClass().getResource("/proyecto/todolist/CSS/menu.css").toExternalForm());
 
             Stage stage = (Stage) loginButton.getScene().getWindow();
