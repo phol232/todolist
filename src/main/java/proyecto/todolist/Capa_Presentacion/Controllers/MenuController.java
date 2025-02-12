@@ -1,12 +1,23 @@
 package proyecto.todolist.Capa_Presentacion.Controllers;
 
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import proyecto.todolist.Capa_Conexion.TareaService;
+import proyecto.todolist.Capa_Datos.TareaModel;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MenuController implements Initializable {
@@ -17,7 +28,17 @@ public class MenuController implements Initializable {
     @FXML private TextField searchInput;
     @FXML private Button searchButton;
     @FXML private Button createTaskButton;
-    @FXML private TableView<Object> taskTable;
+
+    // 🔹 Columnas de la tabla de tareas
+    @FXML private TableView<TareaModel> taskTable;
+    @FXML private TableColumn<TareaModel, String> colNombre;
+    @FXML private TableColumn<TareaModel, String> colDescripcion;
+    @FXML private TableColumn<TareaModel, String> colCategoria;
+    @FXML private TableColumn<TareaModel, String> colPrioridad;
+    @FXML private TableColumn<TareaModel, String> colStatus;
+    @FXML private TableColumn<TareaModel, String> colFecha;
+
+    private final TareaService tareaService = new TareaService();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -28,12 +49,15 @@ public class MenuController implements Initializable {
                 "📅 CALENDAR",
                 "⚙️ SETTINGS"
         );
-        menuList.setItems(items);  // Esto asigna la lista de opciones al ListView
+        menuList.setItems(items);
+
+        setupEventHandlers();
+        configurarColumnas();
+        cargarTareasEnTabla();
     }
 
-
     private void setupEventHandlers() {
-        // ✅ Configurar menú de prioridad dinámicamente
+        // 🔹 Configurar menú de prioridad dinámicamente
         MenuItem highPriority = new MenuItem("Alta 🔴");
         MenuItem mediumPriority = new MenuItem("Media 🟡");
         MenuItem lowPriority = new MenuItem("Baja 🟢");
@@ -44,27 +68,17 @@ public class MenuController implements Initializable {
 
         priorityButton.getItems().addAll(highPriority, mediumPriority, lowPriority);
 
-        // ✅ Evento para el botón de búsqueda
+        // 🔹 Eventos para botones
         searchButton.setOnAction(event -> performSearch());
-
-        // ✅ Evento para el botón de creación de tareas
         createTaskButton.setOnAction(event -> openCreateTaskWindow());
     }
 
     @FXML
-    private void setPriorityHigh() {
-        priorityButton.setText("Alta 🔴");
-    }
-
+    private void setPriorityHigh() { priorityButton.setText("Alta 🔴"); }
     @FXML
-    private void setPriorityMedium() {
-        priorityButton.setText("Media 🟡");
-    }
-
+    private void setPriorityMedium() { priorityButton.setText("Media 🟡"); }
     @FXML
-    private void setPriorityLow() {
-        priorityButton.setText("Baja 🟢");
-    }
+    private void setPriorityLow() { priorityButton.setText("Baja 🟢"); }
 
     @FXML
     private void performSearch() {
@@ -79,9 +93,61 @@ public class MenuController implements Initializable {
 
     @FXML
     private void openCreateTaskWindow() {
-        System.out.println("Abriendo ventana de creación de tareas...");
-        showAlert(Alert.AlertType.INFORMATION, "Crear Tarea", "Función para abrir el formulario de creación de tareas.");
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/proyecto/todolist/FXML/crearTarea-view.fxml"));
+            Parent root = fxmlLoader.load();
+
+            CrearTareaController crearTareaController = fxmlLoader.getController();
+            crearTareaController.setOnTaskSaved(() -> Platform.runLater(this::cargarTareasEnTabla)); // ✅ Ejecutar en UI thread
+
+            Stage stage = new Stage();
+            stage.setTitle("Crear Nueva Tarea");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "No se pudo abrir la ventana de creación de tareas.");
+        }
     }
+
+
+    // 🔹 Configurar las columnas de la tabla
+    private void configurarColumnas() {
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("titulo"));
+        colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+        colCategoria.setCellValueFactory(new PropertyValueFactory<>("nombreCategoria"));
+        colPrioridad.setCellValueFactory(new PropertyValueFactory<>("prioridad"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<>("estado"));
+        colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+    }
+
+    // 🔹 Cargar tareas en la tabla en segundo plano
+    private void cargarTareasEnTabla() {
+        Task<List<TareaModel>> task = new Task<>() {
+            @Override
+            protected List<TareaModel> call() {
+                return tareaService.listarTareas(); // Obtener tareas del backend
+            }
+        };
+
+        task.setOnSucceeded(event -> {
+            List<TareaModel> tareas = task.getValue();
+            if (tareas != null && taskTable != null) {
+                ObservableList<TareaModel> tareaObservableList = FXCollections.observableArrayList(tareas);
+                taskTable.setItems(tareaObservableList);
+            } else {
+                showAlert(Alert.AlertType.WARNING, "Sin datos", "No se pudieron cargar las tareas.");
+            }
+        });
+
+        task.setOnFailed(event -> {
+            showAlert(Alert.AlertType.ERROR, "Error", "No se pudo conectar con el servidor.");
+            System.out.println("❌ Error al cargar tareas: " + task.getException());
+        });
+
+        new Thread(task).start(); // ✅ Ejecutar la carga en un hilo secundario
+    }
+
 
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);

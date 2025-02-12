@@ -1,5 +1,4 @@
 module proyecto.todolist {
-    requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
 
@@ -10,6 +9,11 @@ module proyecto.todolist {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires org.json;
+    requires com.jfoenix;
+    requires com.fasterxml.jackson.databind;
+    requires java.net.http;
+    requires com.fasterxml.jackson.datatype.jsr310;
 
     opens proyecto.todolist to javafx.fxml;
     exports proyecto.todolist;
@@ -19,4 +23,8 @@ module proyecto.todolist {
 
     exports proyecto.todolist.Capa_Presentacion.Vista;
     opens proyecto.todolist.Capa_Presentacion.Vista to javafx.fxml;
+
+    // ✅ Solución: Permitir que Jackson acceda a las clases de datos
+    exports proyecto.todolist.Capa_Datos;
+    opens proyecto.todolist.Capa_Datos to com.fasterxml.jackson.databind;
 }

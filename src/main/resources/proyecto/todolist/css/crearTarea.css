@@ -1,0 +1,99 @@
+/* Ajuste del VBox general */
+VBox {
+    -fx-padding: 8;
+    -fx-spacing: 8;
+    -fx-alignment: top-left;
+    -fx-background-color: #ffffff;
+}
+
+/* Ajuste para Labels */
+Label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #333333;
+    -fx-font-weight: bold;
+}
+
+/* Tamaño uniforme para todos los inputs y combobox */
+TextField, TextArea, ComboBox, DatePicker {
+    -fx-pref-width: 280px;
+    -fx-pref-height: 30px;
+    -fx-font-size: 12px;
+    -fx-background-radius: 5px;
+    -fx-border-color: #ccc;
+}
+
+/* Ajuste del área de descripción */
+TextArea {
+    -fx-pref-height: 60px;
+    -fx-wrap-text: true;
+}
+
+/* Botón Nueva Categoría alineado al centro */
+#btnNuevaCategoria {
+    -fx-pref-width: 160px;
+    -fx-pref-height: 35px;
+    -fx-background-color: #FFD700;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+}
+
+/* Botones principales alineados al centro */
+Button {
+    -fx-pref-width: 120px;
+    -fx-pref-height: 35px;
+    -fx-background-color: #FFD700;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+}
+
+/* Hover de botones */
+Button:hover {
+    -fx-background-color: #FFC107;
+}
+
+/* Contenedor de los botones "Guardar" y "Volver" */
+HBox {
+    -fx-spacing: 20;
+    -fx-alignment: center;
+}
+
+#btnNuevaCategoria{
+    -fx-pref-width: 130px;
+    -fx-pref-height: 35px;
+    -fx-background-color: #FFD700;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+    -fx-translate-x: 80px;
+}
+
+/* Ajuste del JFXDatePicker */
+JFXDatePicker {
+    -fx-pref-width: 280px;
+    -fx-pref-height: 30px;
+    -fx-font-size: 14px;
+    -fx-background-radius: 5px;
+    -fx-border-color: #ccc;
+}
+
+/* Ajustar el color del texto */
+.jfx-date-picker .text-field {
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+}
+
+/* Ajustar el color del botón de selección de fecha */
+.jfx-date-picker .arrow-button {
+    -fx-background-color: #FFD700;
+    -fx-border-radius: 5px;
+}
+
+/* Cambiar el color del calendario emergente */
+.jfx-datepicker-popup {
+    -fx-background-color: white;
+    -fx-pref-width: 250px;
+    -fx-pref-height: 220px;
+}
+

@@ -55,15 +55,16 @@
             <!-- Tabla de tareas -->
             <TableView fx:id="taskTable">
                 <columns>
-                    <TableColumn text="NOMBRE" minWidth="120"/>
-                    <TableColumn text="DESCRIPCIÓN" minWidth="150"/>
-                    <TableColumn text="CATEGORÍA" minWidth="120"/>
-                    <TableColumn text="PRIORIDAD" minWidth="120"/>
-                    <TableColumn text="STATUS" minWidth="120"/>
-                    <TableColumn text="FECHA" minWidth="130"/>
-                    <TableColumn text="ACCIONES" minWidth="220"/>
+                    <TableColumn fx:id="colNombre" text="NOMBRE" minWidth="120"/>
+                    <TableColumn fx:id="colDescripcion" text="DESCRIPCIÓN" minWidth="150"/>
+                    <TableColumn fx:id="colCategoria" text="CATEGORÍA" minWidth="120"/>
+                    <TableColumn fx:id="colPrioridad" text="PRIORIDAD" minWidth="120"/>
+                    <TableColumn fx:id="colStatus" text="STATUS" minWidth="120"/>
+                    <TableColumn fx:id="colFecha" text="FECHA" minWidth="130"/>
+                    <TableColumn fx:id="colAcciones" text="ACCIONES" minWidth="220"/>
                 </columns>
             </TableView>
+
         </VBox>
     </center>
 </BorderPane>

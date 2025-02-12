@@ -16,15 +16,11 @@
         <maven.compiler.target>17</maven.compiler.target>
         <junit.version>5.10.2</junit.version>
         <javafx.version>17.0.6</javafx.version>
+        <jfoenix.version>9.0.10</jfoenix.version>
     </properties>
 
     <dependencies>
-        <!-- 📌 Dependencias JavaFX (Se agregó javafx-base y javafx-graphics) -->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-base</artifactId>
-            <version>${javafx.version}</version>
-        </dependency>
+        <!-- 📌 Dependencias JavaFX -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -43,11 +39,6 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-web</artifactId>
-            <version>${javafx.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-swing</artifactId>
             <version>${javafx.version}</version>
         </dependency>
         <dependency>
@@ -83,6 +74,13 @@
             <version>0.4.0</version>
         </dependency>
         <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.14.2</version> <!-- Usa la misma versión que tu Jackson actual -->
+        </dependency>
+
+
+        <dependency>
             <groupId>eu.hansolo</groupId>
             <artifactId>tilesfx</artifactId>
             <version>21.0.3</version>
@@ -93,12 +91,24 @@
             <version>17.3</version>
         </dependency>
 
+        <!-- 📌 JFoenix (Material Design para JavaFX) -->
+        <dependency>
+            <groupId>com.jfoenix</groupId>
+            <artifactId>jfoenix</artifactId>
+            <version>${jfoenix.version}</version>
+        </dependency>
+
         <!-- 📌 JUnit para pruebas -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20210307</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -120,7 +130,7 @@
                 </configuration>
             </plugin>
 
-            <!-- 📌 Plugin para ejecutar JavaFX (Corregido y optimizado) -->
+            <!-- 📌 Plugin para ejecutar JavaFX con Maven -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
@@ -139,4 +149,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

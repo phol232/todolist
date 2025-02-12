@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import proyecto.todolist.Capa_Conexion.LoginService;
 
 import java.io.IOException;
 
@@ -29,12 +30,11 @@ public class LoginController {
     @FXML
     private Button loginButton;
 
+    private static String userId; // 📌 Variable para almacenar el ID del usuario autenticado
+
     @FXML
     private void initialize() {
-        // Manejar clic en "Create an account"
         createAccount.setOnAction(event -> handleCreateAccountRedirect());
-
-        // Manejar clic en "Login"
         loginButton.setOnAction(event -> handleLogin());
     }
 
@@ -43,30 +43,48 @@ public class LoginController {
         String email = emailField.getText().trim();
         String password = passwordField.getText().trim();
 
-        if (validateLogin(email, password)) {
-            System.out.println("✅ Login successful!");
-            showAlert(Alert.AlertType.INFORMATION, "Success", "Welcome to ToDo List!");
-
-            // Redirigir al MenuView.fxml después de iniciar sesión exitosamente
-            loadMainMenu();
+        if (!validateLogin(email, password)) {
+            return;
         }
+
+        // Llamar al servicio de autenticación
+        boolean isAuthenticated = LoginService.login(email, password);
+
+        if (isAuthenticated) {
+            // 📌 Guardar el `userId` para usarlo en otras partes de la app
+            userId = LoginService.getUserId();
+
+            if (userId != null) {
+                System.out.println("🔥 Usuario autenticado. ID: " + userId);
+            }
+
+            showAlert(Alert.AlertType.INFORMATION, "Éxito", "Inicio de sesión exitoso.");
+            loadMainMenu();  // Redirige al menú principal
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Error", "Correo o contraseña incorrectos.");
+        }
+    }
+
+    // 📌 Método para obtener el `userId` en otras partes del programa
+    public static String getUserId() {
+        return userId;
     }
 
     private boolean validateLogin(String email, String password) {
         if (email.isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Error", "⚠️ Please enter your email.");
+            showAlert(Alert.AlertType.WARNING, "Error", "⚠️ Por favor ingrese su email.");
             return false;
         }
         if (!email.contains("@") || !email.contains(".")) {
-            showAlert(Alert.AlertType.WARNING, "Error", "⚠️ Enter a valid email.");
+            showAlert(Alert.AlertType.WARNING, "Error", "⚠️ Ingrese un email válido.");
             return false;
         }
         if (password.isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Error", "⚠️ Please enter your password.");
+            showAlert(Alert.AlertType.WARNING, "Error", "⚠️ Ingrese su contraseña.");
             return false;
         }
         if (password.length() < 6) {
-            showAlert(Alert.AlertType.WARNING, "Error", "⚠️ Password must be at least 6 characters.");
+            showAlert(Alert.AlertType.WARNING, "Error", "⚠️ La contraseña debe tener al menos 6 caracteres.");
             return false;
         }
         return true;
@@ -75,15 +93,11 @@ public class LoginController {
     @FXML
     private void handleCreateAccountRedirect() {
         try {
-            // Cargar la vista de Registro
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/proyecto/todolist/fxml/register-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/proyecto/todolist/FXML/register-view.fxml"));
             Parent root = loader.load();
-
-            // Crear la nueva escena y aplicar CSS
             Scene scene = new Scene(root, 350, 550);
-            scene.getStylesheets().add(getClass().getResource("/proyecto/todolist/css/register.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/proyecto/todolist/CSS/register.css").toExternalForm());
 
-            // Obtener la ventana actual y reemplazar la escena
             Stage stage = (Stage) createAccount.getScene().getWindow();
             stage.setScene(scene);
             stage.setTitle("Registro - ToDo List");
@@ -95,15 +109,11 @@ public class LoginController {
 
     private void loadMainMenu() {
         try {
-            // Cargar la vista del menú principal
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/proyecto/todolist/fxml/MenuView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/proyecto/todolist/FXML/MenuView.fxml"));
             Parent root = loader.load();
-
-            // Crear la nueva escena y aplicar CSS
             Scene scene = new Scene(root, 1250, 700);
-            scene.getStylesheets().add(getClass().getResource("/proyecto/todolist/css/menu.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/proyecto/todolist/CSS/menu.css").toExternalForm());
 
-            // Obtener la ventana actual y reemplazar la escena
             Stage stage = (Stage) loginButton.getScene().getWindow();
             stage.setScene(scene);
             stage.setTitle("ToDo List - Menú Principal");
