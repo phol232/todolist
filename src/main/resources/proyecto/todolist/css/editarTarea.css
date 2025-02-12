@@ -1,0 +1,90 @@
+/* Ajuste del VBox general */
+VBox {
+    -fx-padding: 6;
+    -fx-spacing: 6;
+    -fx-alignment: top-left;
+    -fx-background-color: #ffffff;
+}
+
+/* Ajuste para Labels */
+Label {
+    -fx-font-size: 11px;
+    -fx-text-fill: #333333;
+    -fx-font-weight: bold;
+}
+
+/* Tamaño uniforme para todos los inputs y combobox */
+TextField, TextArea, ComboBox, DatePicker {
+    -fx-pref-width: 280px;
+    -fx-pref-height: 25px;  /* 🔹 Reducido para mejor ajuste */
+    -fx-font-size: 11px;
+    -fx-background-radius: 5px;
+    -fx-border-color: #ccc;
+}
+
+/* Ajuste del área de descripción */
+TextArea {
+    -fx-pref-height: 50px;  /* 🔹 Reducido */
+    -fx-wrap-text: true;
+}
+
+/* Botones principales alineados al centro */
+Button {
+    -fx-pref-width: 120px;
+    -fx-pref-height: 30px;  /* 🔹 Reducido */
+    -fx-spacing: 15;
+    -fx-background-color: #FFD700;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+}
+
+/* Hover de botones */
+Button:hover {
+    -fx-background-color: #FFC107;
+}
+
+/* Contenedor de los botones */
+HBox {
+    -fx-spacing: 15;  /* 🔹 Ajustado */
+    -fx-alignment: center;
+}
+
+/* Estilos específicos para los botones en Editar Tarea */
+#btnGuardarTarea {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+}
+
+#btnCancelar {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+}
+
+/* Ajuste del JFXDatePicker */
+JFXDatePicker {
+    -fx-pref-width: 280px;
+    -fx-pref-height: 25px;  /* 🔹 Reducido */
+    -fx-font-size: 12px;
+    -fx-background-radius: 5px;
+    -fx-border-color: #ccc;
+}
+
+/* Ajustar el color del texto */
+.jfx-date-picker .text-field {
+    -fx-text-fill: black;
+    -fx-font-size: 12px;
+}
+
+/* Ajustar el color del botón de selección de fecha */
+.jfx-date-picker .arrow-button {
+    -fx-background-color: #FFD700;
+    -fx-border-radius: 5px;
+}
+
+/* Cambiar el color del calendario emergente */
+.jfx-datepicker-popup {
+    -fx-background-color: white;
+    -fx-pref-width: 250px;
+    -fx-pref-height: 200px;
+}

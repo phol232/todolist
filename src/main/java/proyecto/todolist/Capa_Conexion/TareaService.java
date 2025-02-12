@@ -35,40 +35,42 @@ public class TareaService {
             @Override
             protected Void call() {
                 try {
-                    // 🚀 Validar que los datos no estén vacíos antes de enviarlos
                     if (titulo.isEmpty() || descripcion.isEmpty()) {
                         Platform.runLater(() -> System.out.println("⚠️ Error: Título y descripción son obligatorios."));
                         return null;
                     }
 
-                    // 🚀 Validar si el backend está accesible antes de enviar la petición
                     if (!verificarConexion()) {
                         Platform.runLater(() -> System.out.println("⚠️ Error: El backend no está accesible."));
                         return null;
                     }
 
-                    Map<String, String> requestBody = new HashMap<>();
+                    // 📌 Construir el JSON correctamente con categoría como objeto
+                    Map<String, Object> requestBody = new HashMap<>();
                     requestBody.put("titulo", titulo);
                     requestBody.put("descripcion", descripcion);
-                    requestBody.put("categoria", categoria);
+                    requestBody.put("categoria", Map.of("nombre", categoria)); // ✅ Corrección aquí
                     requestBody.put("prioridad", prioridad);
                     requestBody.put("estado", estado);
+
+                    String jsonBody = objectMapper.writeValueAsString(requestBody);
+                    System.out.println("📡 Enviando JSON al backend: " + jsonBody);
 
                     HttpRequest request = HttpRequest.newBuilder()
                             .uri(URI.create(BASE_URL))
                             .header("Content-Type", "application/json")
-                            .header("Cookie", LoginService.getSessionCookie()) // ✅ Enviar la cookie de sesión
-                            .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(requestBody)))
+                            .header("Cookie", LoginService.getSessionCookie())
+                            .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                             .build();
 
                     HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
                     if (response.statusCode() == HttpURLConnection.HTTP_OK) {
-                        Platform.runLater(callback); // ✅ Ejecuta el callback cuando la tarea se complete
+                        Platform.runLater(callback);
                     } else {
                         Platform.runLater(() -> {
                             System.out.println("❌ Error al guardar tarea. Código: " + response.statusCode());
-                            System.out.println("🔍 Respuesta del servidor: " + response.body()); // ✅ Mostrar respuesta del servidor
+                            System.out.println("🔍 Respuesta del servidor: " + response.body());
                         });
                     }
                 } catch (IOException | InterruptedException e) {
@@ -78,7 +80,7 @@ public class TareaService {
             }
         };
 
-        new Thread(task).start(); // Ejecuta en segundo plano
+        new Thread(task).start();
     }
 
     // ✅ Método para verificar si el backend está accesible
@@ -96,73 +98,112 @@ public class TareaService {
         }
     }
 
-    // ✅ Editar tarea existente
-    public List<TareaModel> editarTarea(String idTarea, String titulo, String descripcion, String categoria, String prioridad, String estado) {
-        try {
-            Map<String, String> requestBody = new HashMap<>();
-            requestBody.put("titulo", titulo);
-            requestBody.put("descripcion", descripcion);
-            requestBody.put("categoria", categoria);
-            requestBody.put("prioridad", prioridad);
-            requestBody.put("estado", estado);
+    public void editarTareaAsync(String idTarea, String titulo, String descripcion, String categoria, String prioridad, String estado, Runnable callback) {
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                try {
+                    if (idTarea == null || idTarea.isEmpty()) {
+                        Platform.runLater(() -> System.out.println("⚠️ Error: El ID de la tarea es inválido."));
+                        return null;
+                    }
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(BASE_URL + "/" + idTarea))
-                    .header("Content-Type", "application/json")
-                    .header("Cookie", LoginService.getSessionCookie()) // ✅ Enviar la cookie de sesión
-                    .PUT(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(requestBody)))
-                    .build();
+                    // 📌 Construir JSON con `categoria` como objeto
+                    Map<String, Object> requestBody = new HashMap<>();
+                    requestBody.put("titulo", titulo);
+                    requestBody.put("descripcion", descripcion);
 
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+                    // ✅ Asegurar que `categoria` no sea nula
+                    if (categoria != null && !categoria.isEmpty()) {
+                        requestBody.put("categoria", Map.of("nombre", categoria)); // 🔹 Corrección aquí
+                    } else {
+                        requestBody.put("categoria", Map.of("nombre", "Sin Categoría")); // 🔹 Valor por defecto
+                    }
 
-            if (response.statusCode() == HttpURLConnection.HTTP_OK) {
-                return objectMapper.readValue(response.body(), new TypeReference<List<TareaModel>>() {});
+                    requestBody.put("prioridad", prioridad);
+                    requestBody.put("estado", estado);
+
+                    // 🔍 Convertir el mapa en un JSON
+                    String jsonBody = objectMapper.writeValueAsString(requestBody);
+                    System.out.println("📡 Enviando JSON al backend: " + jsonBody);
+
+                    // 📌 Construir la solicitud HTTP
+                    HttpRequest request = HttpRequest.newBuilder()
+                            .uri(URI.create(BASE_URL + "/" + idTarea))
+                            .header("Content-Type", "application/json")
+                            .header("Cookie", LoginService.getSessionCookie()) // ✅ Enviar la cookie de sesión
+                            .PUT(HttpRequest.BodyPublishers.ofString(jsonBody))
+                            .build();
+
+                    // 🚀 Enviar la solicitud al backend
+                    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+                    // ✅ Verificar la respuesta del backend
+                    if (response.statusCode() == HttpURLConnection.HTTP_OK) {
+                        Platform.runLater(callback);
+                        System.out.println("✅ Tarea actualizada correctamente.");
+                    } else {
+                        Platform.runLater(() -> {
+                            System.out.println("❌ Error al actualizar tarea. Código: " + response.statusCode());
+                            System.out.println("🔍 Respuesta del servidor: " + response.body());
+                        });
+                    }
+                } catch (IOException | InterruptedException e) {
+                    Platform.runLater(() -> System.out.println("❌ Error en la solicitud: " + e.getMessage()));
+                }
+                return null;
             }
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        return null;
+        };
+
+        new Thread(task).start(); // ✅ Ejecutar en segundo plano
     }
 
-    // ✅ Eliminar tarea
+
+    // ✅ Eliminar tarea sin mostrar `categoria`
     public List<TareaModel> eliminarTarea(String idTarea) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/" + idTarea))
-                    .header("Cookie", LoginService.getSessionCookie()) // ✅ Enviar la cookie de sesión
+                    .header("Cookie", LoginService.getSessionCookie())
                     .DELETE()
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == HttpURLConnection.HTTP_OK) {
-                return objectMapper.readValue(response.body(), new TypeReference<List<TareaModel>>() {});
+                List<TareaModel> tareas = objectMapper.readValue(response.body(), new TypeReference<List<TareaModel>>() {});
+
+                // ✅ Eliminar `categoria` de la respuesta
+                for (TareaModel tarea : tareas) {
+                    tarea.setCategoria(null);
+                }
+
+                return tareas;
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-        return null;
+        return List.of(); // ✅ Retornar lista vacía en caso de error
     }
 
-    // ✅ Listar tareas
     public List<TareaModel> listarTareas() {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL))
-                    .header("Cookie", LoginService.getSessionCookie()) // ✅ Enviar la cookie de sesión
+                    .header("Cookie", LoginService.getSessionCookie())
                     .GET()
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == HttpURLConnection.HTTP_OK) {
-                // ✅ Ahora considera `nombreCategoria`
+                System.out.println("📡 JSON recibido del backend: " + response.body()); // ✅ Depuración
                 return objectMapper.readValue(response.body(), new TypeReference<List<TareaModel>>() {});
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-        return null;
+        return List.of();
     }
 
 }

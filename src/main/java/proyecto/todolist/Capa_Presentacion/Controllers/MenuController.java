@@ -56,6 +56,13 @@ public class MenuController implements Initializable {
         setupEventHandlers();
         configurarColumnas();
         cargarTareasEnTabla();
+
+        // ✅ Evento para recuperar el ID de la tarea seleccionada en la tabla
+        taskTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                System.out.println("🔍 ID de tarea seleccionada: " + newValue.getIdTarea());
+            }
+        });
     }
 
     private void setupEventHandlers() {
@@ -103,7 +110,7 @@ public class MenuController implements Initializable {
             crearTareaController.setOnTaskSaved(() -> Platform.runLater(this::cargarTareasEnTabla)); // ✅ Ejecutar en UI thread
 
             Stage stage = new Stage();
-            stage.setTitle("Crear Nueva Tarea");
+            stage.setTitle("Crear Tarea");
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
@@ -116,7 +123,7 @@ public class MenuController implements Initializable {
     private void configurarColumnas() {
         colNombre.setCellValueFactory(new PropertyValueFactory<>("titulo"));
         colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
-        colCategoria.setCellValueFactory(new PropertyValueFactory<>("nombreCategoria")); // ✅ Usa el nombre real de la categoría
+        colCategoria.setCellValueFactory(new PropertyValueFactory<>("nombreCategoria")); // ✅ Usando el nombre de la categoría
         colPrioridad.setCellValueFactory(new PropertyValueFactory<>("prioridad"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("estado"));
         colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
@@ -133,18 +140,25 @@ public class MenuController implements Initializable {
                 btnCompletar.setStyle("-fx-background-color: #28a745; -fx-text-fill: white;");
                 btnEliminar.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white;");
 
-                // 🔹 Eventos para los botones
                 btnEditar.setOnAction(event -> {
                     TareaModel tarea = getTableView().getItems().get(getIndex());
-
+                    if (tarea != null) {
+                        abrirVentanaEdicion(tarea);
+                    }
                 });
 
                 btnCompletar.setOnAction(event -> {
                     TareaModel tarea = getTableView().getItems().get(getIndex());
                     if (tarea != null) {
-                        tareaService.editarTarea(tarea.getIdTarea(), tarea.getTitulo(), tarea.getDescripcion(),
-                                tarea.getCategoria(), tarea.getPrioridad(), "✅ Completado"); // ✅ Actualiza estado
-                        cargarTareasEnTabla(); // 🔄 Refresca la tabla
+                        tareaService.editarTareaAsync(
+                                tarea.getIdTarea(),
+                                tarea.getTitulo(),
+                                tarea.getDescripcion(),
+                                tarea.getNombreCategoria(),
+                                tarea.getPrioridad(),
+                                "✅ Completado",
+                                MenuController.this::cargarTareasEnTabla // ✅ Corrección aquí
+                        );
                     }
                 });
 
@@ -152,7 +166,7 @@ public class MenuController implements Initializable {
                     TareaModel tarea = getTableView().getItems().get(getIndex());
                     if (tarea != null) {
                         tareaService.eliminarTarea(tarea.getIdTarea());
-                        cargarTareasEnTabla();
+                        MenuController.this.cargarTareasEnTabla(); // ✅ Corrección aquí
                     }
                 });
             }
@@ -171,33 +185,56 @@ public class MenuController implements Initializable {
     }
 
 
+    // 🔹 Método para abrir la ventana de edición
+    private void abrirVentanaEdicion(TareaModel tarea) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/proyecto/todolist/FXML/editarTarea-view.fxml"));
+            Parent root = loader.load();
 
-    // 🔹 Cargar tareas en la tabla en segundo plano
+            EditarTareaController editarTareaController = loader.getController();
+            editarTareaController.setTarea(tarea);
+
+            Stage stage = new Stage();
+            stage.setTitle("Editar Tarea");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            cargarTareasEnTabla();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "No se pudo abrir la ventana de edición.");
+        }
+    }
+
     private void cargarTareasEnTabla() {
         Task<List<TareaModel>> task = new Task<>() {
             @Override
             protected List<TareaModel> call() {
-                return tareaService.listarTareas(); // Obtener tareas del backend
+                return tareaService.listarTareas();
             }
         };
 
         task.setOnSucceeded(event -> {
             List<TareaModel> tareas = task.getValue();
             if (tareas != null && taskTable != null) {
-                ObservableList<TareaModel> tareaObservableList = FXCollections.observableArrayList(tareas);
-                taskTable.setItems(tareaObservableList);
+                System.out.println("📌 Datos de tareas cargadas: ");
+                for (TareaModel tarea : tareas) {
+                    System.out.println("🔹 ID: " + tarea.getIdTarea() +
+                            ", Título: " + tarea.getTitulo() +
+                            ", Categoría: " + tarea.getNombreCategoria());
+                }
+
+                taskTable.getItems().clear();
+                taskTable.setItems(FXCollections.observableArrayList(tareas));
+                taskTable.refresh(); // ✅ Forzar actualización
             } else {
                 showAlert(Alert.AlertType.WARNING, "Sin datos", "No se pudieron cargar las tareas.");
             }
         });
 
-        task.setOnFailed(event -> {
-            showAlert(Alert.AlertType.ERROR, "Error", "No se pudo conectar con el servidor.");
-            System.out.println("❌ Error al cargar tareas: " + task.getException());
-        });
-
-        new Thread(task).start(); // ✅ Ejecutar la carga en un hilo secundario
+        new Thread(task).start();
     }
+
 
 
     private void showAlert(Alert.AlertType type, String title, String message) {

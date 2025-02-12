@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import com.jfoenix.controls.JFXDatePicker?> <!-- Importar JFoenix -->
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="proyecto.todolist.Capa_Presentacion.Controllers.EditarTareaController"
+            prefHeight="460.0" prefWidth="300.0">
+
+    <VBox alignment="TOP_LEFT" spacing="8" stylesheets="@../css/editarTarea.css"
+          layoutX="5" layoutY="5">
+
+        <!-- Campo Nombre -->
+        <VBox style="-fx-padding: 0 0 0 10px;">
+            <Label text="TITULO:" />
+            <TextField fx:id="txtTitulo" promptText="✏️ Escribir aquí..." />
+        </VBox>
+
+        <!-- Campo Descripción -->
+        <VBox style="-fx-padding: 0 0 0 10px;">
+            <Label text="DESCRIPCIÓN:" />
+            <TextArea fx:id="txtDescripcion" promptText="📝 Escribir aquí..." />
+        </VBox>
+
+        <!-- Categoría -->
+        <VBox style="-fx-padding: 0 0 0 10px;">
+            <Label text="CATEGORÍA:" />
+            <ComboBox fx:id="cbCategoria" />
+        </VBox>
+
+        <!-- Prioridad -->
+        <VBox style="-fx-padding: 0 0 0 10px;">
+            <Label text="PRIORIDAD:" />
+            <ComboBox fx:id="cbPrioridad" />
+        </VBox>
+
+        <!-- Estado -->
+        <VBox style="-fx-padding: 0 0 0 10px;">
+            <Label text="ESTADO:" />
+            <ComboBox fx:id="cbEstado" />
+        </VBox>
+
+        <!-- Fecha -->
+        <VBox style="-fx-padding: 0 0 0 10px;">
+            <Label text="FECHA:" />
+            <TextField fx:id="txtFecha" promptText="Seleccionar fecha..." />
+        </VBox>
+
+        <!-- Botones -->
+        <!-- Botones -->
+        <VBox alignment="CENTER" spacing="10" style="-fx-padding: 20 0 0 0;">
+            <HBox alignment="CENTER" spacing="10">
+                <Button text="GUARDAR" fx:id="btnGuardarTarea" onAction="#guardarTarea"/>
+                <Button text="CANCELAR" fx:id="btnCancelar" onAction="#cerrarVentana"/>
+            </HBox>
+        </VBox>
+
+
+    </VBox>
+
+</AnchorPane>
